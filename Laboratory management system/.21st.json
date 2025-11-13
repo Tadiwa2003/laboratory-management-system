@@ -1,0 +1,16 @@
+{
+  "workspace": {
+    "name": "Laboratory Management System",
+    "displayName": "Laboratory Management System",
+    "shortName": "Linos LMS"
+  },
+  "app": {
+    "name": "Laboratory Management System",
+    "displayName": "Laboratory Management System",
+    "shortName": "Linos LMS",
+    "description": "Laboratory Management System for managing patients, specimens, tests, and results"
+  }
+}
+
+
+
