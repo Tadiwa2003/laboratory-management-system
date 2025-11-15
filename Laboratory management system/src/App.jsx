@@ -22,10 +22,13 @@ import ToolbarPromptHandler from './components/toolbar/ToolbarPromptHandler';
 import Welcome from './pages/Welcome';
 
 function App() {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, initialize } = useAuthStore();
   const { darkMode, setDarkMode } = useThemeStore();
 
   useEffect(() => {
+    // Initialize auth state on app load (ensures fresh state on refresh)
+    initialize();
+    
     // Initialize theme from storage
     const savedTheme = localStorage.getItem('theme-storage');
     if (savedTheme) {
@@ -38,7 +41,7 @@ function App() {
         console.error('Error loading theme:', e);
       }
     }
-  }, [setDarkMode]);
+  }, [initialize, setDarkMode]);
 
   return (
     <BrowserRouter>

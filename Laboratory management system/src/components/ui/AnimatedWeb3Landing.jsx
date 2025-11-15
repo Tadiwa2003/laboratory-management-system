@@ -107,6 +107,63 @@ export function Web3HeroAnimated() {
     }
   }, [isAuthenticated, navigate]);
 
+  const DOC_CARDS = [
+    {
+      title: "Getting Started",
+      desc: "Launch your first site and onboard teams in less than 48 hours.",
+      key: "getting-started",
+      icon: BookOpen,
+      gradient: "from-[#007C91]/15 to-[#00B8D4]/15",
+      mainColor: "#007C91",
+      secondaryColor: "#00B8D4",
+    },
+    {
+      title: "User Guide",
+      desc: "Comprehensive guide to all features",
+      key: "user-guide",
+      icon: FileText,
+      gradient: "from-purple-500/40 to-pink-500/40",
+      mainColor: "#a855f7",
+      secondaryColor: "#ec4899"
+    },
+    {
+      title: "API Documentation",
+      desc: "Technical documentation for developers",
+      key: "api-docs",
+      icon: Code,
+      gradient: "from-green-500/40 to-emerald-500/40",
+      mainColor: "#22c55e",
+      secondaryColor: "#10b981"
+    },
+    {
+      title: "Best Practices",
+      desc: "Tips and best practices for optimal usage",
+      key: "best-practices",
+      icon: CheckCircle,
+      gradient: "from-yellow-500/40 to-orange-500/40",
+      mainColor: "#eab308",
+      secondaryColor: "#f97316"
+    },
+    {
+      title: "Troubleshooting",
+      desc: "Common issues and solutions",
+      key: "troubleshooting",
+      icon: AlertCircle,
+      gradient: "from-red-500/40 to-rose-500/40",
+      mainColor: "#ef4444",
+      secondaryColor: "#f43f5e"
+    },
+    {
+      title: "FAQ",
+      desc: "Frequently asked questions",
+      key: "faq",
+      icon: HelpCircle,
+      gradient: "from-indigo-500/40 to-blue-500/40",
+      mainColor: "#6366f1",
+      secondaryColor: "#3b82f6"
+    },
+  ];
+
   return (
     <ReactLenis root>
       <div className="relative w-full text-white">
@@ -150,6 +207,24 @@ export function Web3HeroAnimated() {
         </style>
 
         <section className="relative isolate h-screen overflow-hidden bg-black text-white">
+          {/* Background Image */}
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-40"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1614308459036-779d0dfe51ff?w=1400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFib3JhdG9yeSUyMHRlY2huaWNpYW58ZW58MHx8MHx8fDA%3D')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          />
+          
+          {/* Dark overlay to ensure text readability */}
+          <div 
+            aria-hidden 
+            className="absolute inset-0 -z-30 bg-black/60"
+          />
+
           {/* Gradient tracers */}
           <div className="pointer-events-none absolute inset-0 z-20">
             <GradientTracing
@@ -178,27 +253,26 @@ export function Web3HeroAnimated() {
             />
           </div>
           {/* ================== BACKGROUND ================== */}
-          {/* Luminous elliptical gradients */}
+          {/* Luminous elliptical gradients for additional depth */}
           <div
             aria-hidden
-            className="absolute inset-0 -z-30"
+            className="absolute inset-0 -z-20"
             style={{
               backgroundImage: [
-                // Main central dome/band
-                "radial-gradient(80% 55% at 50% 52%, rgba(14,165,233,0.45) 0%, rgba(2,132,199,0.46) 27%, rgba(3,105,161,0.38) 47%, rgba(7,89,133,0.45) 60%, rgba(12,74,110,0.92) 78%, rgba(0,0,0,1) 88%)",
+                // Main central dome/band with reduced opacity
+                "radial-gradient(80% 55% at 50% 52%, rgba(14,165,233,0.25) 0%, rgba(2,132,199,0.26) 27%, rgba(3,105,161,0.20) 47%, rgba(7,89,133,0.25) 60%, rgba(12,74,110,0.50) 78%, rgba(0,0,0,0.70) 88%)",
                 // Warm sweep from top-left
-                "radial-gradient(85% 60% at 14% 0%, rgba(56,189,248,0.65) 0%, rgba(14,165,233,0.58) 30%, rgba(48,24,28,0.0) 64%)",
+                "radial-gradient(85% 60% at 14% 0%, rgba(56,189,248,0.35) 0%, rgba(14,165,233,0.30) 30%, rgba(48,24,28,0.0) 64%)",
                 // Cool rim on top-right
-                "radial-gradient(70% 50% at 86% 22%, rgba(59,130,246,0.40) 0%, rgba(16,18,28,0.0) 55%)",
+                "radial-gradient(70% 50% at 86% 22%, rgba(59,130,246,0.25) 0%, rgba(16,18,28,0.0) 55%)",
                 // Soft top vignette
-                "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0) 40%)",
+                "linear-gradient(to bottom, rgba(0,0,0,0.20), rgba(0,0,0,0) 40%)",
               ].join(","),
-              backgroundColor: "#000",
             }}
           />
 
           {/* Vignette corners for extra contrast */}
-          <div aria-hidden className="absolute inset-0 -z-20 bg-[radial-gradient(140%_120%_at_50%_0%,transparent_60%,rgba(0,0,0,0.85))]" />
+          <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(140%_120%_at_50%_0%,transparent_60%,rgba(0,0,0,0.60))]" />
 
           {/* Grid overlay */}
           <div
@@ -504,62 +578,7 @@ export function Web3HeroAnimated() {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                { 
-                  title: 'Getting Started', 
-                  desc: 'Quick start guide for new users',
-                  key: 'getting-started',
-                  icon: BookOpen,
-                  gradient: 'from-blue-500/40 to-cyan-500/40',
-                  mainColor: '#3b82f6',
-                  secondaryColor: '#06b6d4'
-                },
-                { 
-                  title: 'User Guide', 
-                  desc: 'Comprehensive guide to all features',
-                  key: 'user-guide',
-                  icon: FileText,
-                  gradient: 'from-purple-500/40 to-pink-500/40',
-                  mainColor: '#a855f7',
-                  secondaryColor: '#ec4899'
-                },
-                { 
-                  title: 'API Documentation', 
-                  desc: 'Technical documentation for developers',
-                  key: 'api-docs',
-                  icon: Code,
-                  gradient: 'from-green-500/40 to-emerald-500/40',
-                  mainColor: '#22c55e',
-                  secondaryColor: '#10b981'
-                },
-                { 
-                  title: 'Best Practices', 
-                  desc: 'Tips and best practices for optimal usage',
-                  key: 'best-practices',
-                  icon: CheckCircle,
-                  gradient: 'from-yellow-500/40 to-orange-500/40',
-                  mainColor: '#eab308',
-                  secondaryColor: '#f97316'
-                },
-                { 
-                  title: 'Troubleshooting', 
-                  desc: 'Common issues and solutions',
-                  key: 'troubleshooting',
-                  icon: AlertCircle,
-                  gradient: 'from-red-500/40 to-rose-500/40',
-                  mainColor: '#ef4444',
-                  secondaryColor: '#f43f5e'
-                },
-                { 
-                  title: 'FAQ', 
-                  desc: 'Frequently asked questions',
-                  key: 'faq',
-                  icon: HelpCircle,
-                  gradient: 'from-indigo-500/40 to-blue-500/40',
-                  mainColor: '#6366f1',
-                  secondaryColor: '#3b82f6'
-                },
-              ].map((doc, idx) => {
+              {DOC_CARDS.map((doc, idx) => {
                 const Icon = doc.icon;
                 return (
                   <motion.div

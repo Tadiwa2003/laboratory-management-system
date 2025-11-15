@@ -30,6 +30,7 @@ import { Badge } from '../components/ui/Badge';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '../components/ui/PieChart';
 import { AnimatedChartCard, ChartCardBody, ChartCardTitle } from '../components/ui/AnimatedChartCard';
 import MonthlyAnalytics from '../components/ui/MonthlyAnalytics';
+import Interactive3DAnalyticsCard from '../components/ui/Interactive3DAnalyticsCard';
 import useAuthStore from '../store/authStore';
 import mockDataService from '../services/mockData';
 
@@ -207,22 +208,22 @@ const Dashboard = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-            Test Trends (Last 7 Days)
-          </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={testTrendData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="tests" stroke="#3b82f6" name="Tests Ordered" />
-              <Line type="monotone" dataKey="results" stroke="#10b981" name="Results Completed" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <Interactive3DAnalyticsCard
+            title="Test Trends"
+            subtitle="Last 7 Days"
+            data={testTrendData.map(item => ({
+              name: item.name,
+              value: item.tests,
+              results: item.results
+            }))}
+            isLoading={false}
+          />
+        </motion.div>
 
         <Card className="flex flex-col">
           <CardHeader className="items-center pb-0">
