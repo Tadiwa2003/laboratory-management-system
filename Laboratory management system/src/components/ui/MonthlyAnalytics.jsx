@@ -89,11 +89,19 @@ const generateDate = (offsetDays) => {
 };
 
 const validateChartData = (data) => {
+  if (!data || !Array.isArray(data)) {
+    return [
+      { key: 'New Patients', data: [] },
+      { key: 'Tests Performed', data: [] },
+      { key: 'Results Completed', data: [] },
+    ];
+  }
   return data.map(series => ({
     ...series,
-    data: series.data.map(item => ({
+    data: (series.data || []).map(item => ({
       ...item,
-      data: (typeof item.data !== 'number' || isNaN(item.data)) ? 0 : item.data,
+      key: item.key || new Date(),
+      data: (typeof item.data !== 'number' || isNaN(item.data)) ? 0 : Math.max(0, item.data),
     })),
   }));
 };
@@ -119,12 +127,13 @@ const MonthlyAnalytics = ({ monthlyData = [] }) => {
     }
     
     // Return the last N months based on the time period
-    return monthlyData.slice(-dataPoints);
+    const filtered = monthlyData.slice(-dataPoints);
+    return filtered.length > 0 ? filtered : monthlyData.slice(-1);
   }, [selectedTimePeriod, monthlyData]);
 
   // Generate chart data from filtered monthly data
   const generateChartData = () => {
-    if (filteredData.length === 0) {
+    if (!filteredData || filteredData.length === 0) {
       return [
         { key: 'New Patients', data: [] },
         { key: 'Tests Performed', data: [] },
@@ -135,37 +144,99 @@ const MonthlyAnalytics = ({ monthlyData = [] }) => {
     const chartData = [
       {
         key: 'New Patients',
-        data: filteredData.map((item, idx) => ({
-          key: generateDate((filteredData.length - 1 - idx) * 30),
-          data: item.patients || 0,
-        })),
+        data: filteredData.map((item, idx) => {
+          // Use the date from the item if available, otherwise generate one
+          const date = item.date ? new Date(item.date) : generateDate((filteredData.length - 1 - idx) * 30);
+          return {
+            key: date,
+            data: item.patients || 0,
+          };
+        }),
       },
       {
         key: 'Tests Performed',
-        data: filteredData.map((item, idx) => ({
-          key: generateDate((filteredData.length - 1 - idx) * 30),
-          data: item.tests || 0,
-        })),
+        data: filteredData.map((item, idx) => {
+          const date = item.date ? new Date(item.date) : generateDate((filteredData.length - 1 - idx) * 30);
+          return {
+            key: date,
+            data: item.tests || 0,
+          };
+        }),
       },
       {
         key: 'Results Completed',
-        data: filteredData.map((item, idx) => ({
-          key: generateDate((filteredData.length - 1 - idx) * 30),
-          data: Math.floor((item.tests || 0) * 0.85), // Approximate completed results
-        })),
+        data: filteredData.map((item, idx) => {
+          const date = item.date ? new Date(item.date) : generateDate((filteredData.length - 1 - idx) * 30);
+          // Use actual results count if available, otherwise calculate from tests
+          const resultsCount = item.results !== undefined ? item.results : Math.floor((item.tests || 0) * 0.85);
+          return {
+            key: date,
+            data: resultsCount,
+          };
+        }),
       },
     ];
     return validateChartData(chartData);
   };
 
-  // Generate chart data - recalculates when filteredData or selectedTimePeriod changes
-  const chartData = useMemo(() => generateChartData(), [filteredData, selectedTimePeriod]);
+  // Generate chart data - recalculates when filteredData changes
+  const chartData = useMemo(() => generateChartData(), [filteredData]);
 
-  // Calculate stats from filtered data
-  const totalPatients = filteredData.reduce((sum, item) => sum + (item.patients || 0), 0);
-  const totalTests = filteredData.reduce((sum, item) => sum + (item.tests || 0), 0);
-  const avgPatients = filteredData.length > 0 ? Math.round(totalPatients / filteredData.length) : 0;
-  const avgTests = filteredData.length > 0 ? Math.round(totalTests / filteredData.length) : 0;
+  // Calculate stats from filtered data - memoized for performance
+  const stats = useMemo(() => {
+    const totalPatients = filteredData.reduce((sum, item) => sum + (item.patients || 0), 0);
+    const totalTests = filteredData.reduce((sum, item) => sum + (item.tests || 0), 0);
+    const totalResults = filteredData.reduce((sum, item) => sum + (item.results || 0), 0);
+    const avgPatients = filteredData.length > 0 ? Math.round(totalPatients / filteredData.length) : 0;
+    const avgTests = filteredData.length > 0 ? Math.round(totalTests / filteredData.length) : 0;
+    const avgResults = filteredData.length > 0 ? Math.round(totalResults / filteredData.length) : 0;
+    
+    // Calculate completion rate (results / tests * 100)
+    const completionRate = totalTests > 0 ? Math.round((totalResults / totalTests) * 100) : 0;
+    
+    // Calculate percentage changes (compare with previous period if available)
+    const previousPeriodData = monthlyData.length > filteredData.length 
+      ? monthlyData.slice(0, monthlyData.length - filteredData.length).slice(-filteredData.length)
+      : [];
+    
+    const previousPatients = previousPeriodData.length > 0 
+      ? previousPeriodData.reduce((sum, item) => sum + (item.patients || 0), 0) 
+      : 0;
+    const previousTests = previousPeriodData.length > 0 
+      ? previousPeriodData.reduce((sum, item) => sum + (item.tests || 0), 0) 
+      : 0;
+    
+    const patientsPercentage = previousPatients > 0 
+      ? Math.round(((totalPatients - previousPatients) / previousPatients) * 100)
+      : totalPatients > 0 ? 12 : 0;
+    const testsPercentage = previousTests > 0 
+      ? Math.round(((totalTests - previousTests) / previousTests) * 100)
+      : totalTests > 0 ? 8 : 0;
+    
+    return {
+      totalPatients,
+      totalTests,
+      totalResults,
+      avgPatients,
+      avgTests,
+      avgResults,
+      completionRate,
+      patientsPercentage,
+      testsPercentage,
+    };
+  }, [filteredData, monthlyData]);
+
+  const {
+    totalPatients,
+    totalTests,
+    totalResults,
+    avgPatients,
+    avgTests,
+    avgResults,
+    completionRate,
+    patientsPercentage,
+    testsPercentage,
+  } = stats;
 
   // Get period label for comparison text
   const getPeriodLabel = () => {
@@ -181,10 +252,10 @@ const MonthlyAnalytics = ({ monthlyData = [] }) => {
       count: totalPatients,
       countFrom: 0,
       comparisonText: filteredData.length > 0 ? `Average ${avgPatients} per period` : 'No data available',
-      percentage: 12,
-      TrendIconSvg: SummaryUpArrowIcon,
-      trendColor: 'text-[#8b5cf6]',
-      trendBgColor: 'bg-[#8b5cf6]/20',
+      percentage: Math.abs(patientsPercentage),
+      TrendIconSvg: patientsPercentage >= 0 ? SummaryUpArrowIcon : SummaryDownArrowIcon,
+      trendColor: patientsPercentage >= 0 ? 'text-[#8b5cf6]' : 'text-red-500',
+      trendBgColor: patientsPercentage >= 0 ? 'bg-[#8b5cf6]/20' : 'bg-red-500/20',
     },
     {
       id: 'tests',
@@ -192,10 +263,10 @@ const MonthlyAnalytics = ({ monthlyData = [] }) => {
       count: totalTests,
       countFrom: 0,
       comparisonText: filteredData.length > 0 ? `Average ${avgTests} per period` : 'No data available',
-      percentage: 8,
-      TrendIconSvg: SummaryUpArrowIcon,
-      trendColor: 'text-[#0ea5e9]',
-      trendBgColor: 'bg-[#0ea5e9]/20',
+      percentage: Math.abs(testsPercentage),
+      TrendIconSvg: testsPercentage >= 0 ? SummaryUpArrowIcon : SummaryDownArrowIcon,
+      trendColor: testsPercentage >= 0 ? 'text-[#0ea5e9]' : 'text-red-500',
+      trendBgColor: testsPercentage >= 0 ? 'bg-[#0ea5e9]/20' : 'bg-red-500/20',
     },
   ];
 
@@ -206,9 +277,9 @@ const MonthlyAnalytics = ({ monthlyData = [] }) => {
       label: 'New Patients',
       tooltip: 'New Patients',
       value: filteredData.length > 0 ? `${avgPatients}` : '0',
-      TrendIcon: TrendUpIcon,
+      TrendIcon: patientsPercentage >= 0 ? TrendUpIcon : TrendDownIcon,
       trendBaseColor: '#8b5cf6',
-      trendStrokeColor: '#a78bfa',
+      trendStrokeColor: patientsPercentage >= 0 ? '#a78bfa' : '#ef4444',
       delay: 0,
       iconFillColor: '#8b5cf6',
     },
@@ -218,9 +289,9 @@ const MonthlyAnalytics = ({ monthlyData = [] }) => {
       label: 'Tests Performed',
       tooltip: 'Tests Performed',
       value: filteredData.length > 0 ? `${avgTests}` : '0',
-      TrendIcon: TrendUpIcon,
+      TrendIcon: testsPercentage >= 0 ? TrendUpIcon : TrendDownIcon,
       trendBaseColor: '#0ea5e9',
-      trendStrokeColor: '#38bdf8',
+      trendStrokeColor: testsPercentage >= 0 ? '#38bdf8' : '#ef4444',
       delay: 0.05,
       iconFillColor: '#0ea5e9',
     },
@@ -229,10 +300,10 @@ const MonthlyAnalytics = ({ monthlyData = [] }) => {
       Icon: ResultsIcon,
       label: 'Completion Rate',
       tooltip: 'Completion Rate',
-      value: '85%',
-      TrendIcon: TrendDownIcon,
+      value: `${completionRate}%`,
+      TrendIcon: completionRate >= 80 ? TrendUpIcon : TrendDownIcon,
       trendBaseColor: '#10b981',
-      trendStrokeColor: '#34d399',
+      trendStrokeColor: completionRate >= 80 ? '#34d399' : '#ef4444',
       delay: 0.1,
       iconFillColor: '#10b981',
     },
@@ -337,7 +408,7 @@ const MonthlyAnalytics = ({ monthlyData = [] }) => {
                   duration={2.5}
                 />
                 <div className={`flex ${stat.trendBgColor} p-1 pl-2 pr-2 items-center rounded-full ${stat.trendColor}`}>
-                  <stat.TrendIconSvg strokeColor={stat.trendColor.includes('8b5cf6') ? '#8b5cf6' : '#0ea5e9'} />
+                  <stat.TrendIconSvg strokeColor={stat.trendColor.includes('8b5cf6') ? '#8b5cf6' : stat.trendColor.includes('0ea5e9') ? '#0ea5e9' : '#ef4444'} />
                   {stat.percentage}%
                 </div>
               </div>

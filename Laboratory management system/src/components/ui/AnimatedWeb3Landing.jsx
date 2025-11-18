@@ -207,24 +207,6 @@ export function Web3HeroAnimated() {
         </style>
 
         <section className="relative isolate h-screen overflow-hidden bg-black text-white">
-          {/* Background Image */}
-          <div
-            aria-hidden
-            className="absolute inset-0 -z-40"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1614308459036-779d0dfe51ff?w=1400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFib3JhdG9yeSUyMHRlY2huaWNpYW58ZW58MHx8MHx8fDA%3D')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-            }}
-          />
-          
-          {/* Dark overlay to ensure text readability */}
-          <div 
-            aria-hidden 
-            className="absolute inset-0 -z-30 bg-black/60"
-          />
-
           {/* Gradient tracers */}
           <div className="pointer-events-none absolute inset-0 z-20">
             <GradientTracing
@@ -253,26 +235,27 @@ export function Web3HeroAnimated() {
             />
           </div>
           {/* ================== BACKGROUND ================== */}
-          {/* Luminous elliptical gradients for additional depth */}
+          {/* Luminous elliptical gradients */}
           <div
             aria-hidden
-            className="absolute inset-0 -z-20"
+            className="absolute inset-0 -z-30"
             style={{
               backgroundImage: [
-                // Main central dome/band with reduced opacity
-                "radial-gradient(80% 55% at 50% 52%, rgba(14,165,233,0.25) 0%, rgba(2,132,199,0.26) 27%, rgba(3,105,161,0.20) 47%, rgba(7,89,133,0.25) 60%, rgba(12,74,110,0.50) 78%, rgba(0,0,0,0.70) 88%)",
+                // Main central dome/band
+                "radial-gradient(80% 55% at 50% 52%, rgba(14,165,233,0.45) 0%, rgba(2,132,199,0.46) 27%, rgba(3,105,161,0.38) 47%, rgba(7,89,133,0.45) 60%, rgba(12,74,110,0.92) 78%, rgba(0,0,0,1) 88%)",
                 // Warm sweep from top-left
-                "radial-gradient(85% 60% at 14% 0%, rgba(56,189,248,0.35) 0%, rgba(14,165,233,0.30) 30%, rgba(48,24,28,0.0) 64%)",
+                "radial-gradient(85% 60% at 14% 0%, rgba(56,189,248,0.65) 0%, rgba(14,165,233,0.58) 30%, rgba(48,24,28,0.0) 64%)",
                 // Cool rim on top-right
-                "radial-gradient(70% 50% at 86% 22%, rgba(59,130,246,0.25) 0%, rgba(16,18,28,0.0) 55%)",
+                "radial-gradient(70% 50% at 86% 22%, rgba(59,130,246,0.40) 0%, rgba(16,18,28,0.0) 55%)",
                 // Soft top vignette
-                "linear-gradient(to bottom, rgba(0,0,0,0.20), rgba(0,0,0,0) 40%)",
+                "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0) 40%)",
               ].join(","),
+              backgroundColor: "#000",
             }}
           />
 
           {/* Vignette corners for extra contrast */}
-          <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(140%_120%_at_50%_0%,transparent_60%,rgba(0,0,0,0.60))]" />
+          <div aria-hidden className="absolute inset-0 -z-20 bg-[radial-gradient(140%_120%_at_50%_0%,transparent_60%,rgba(0,0,0,0.85))]" />
 
           {/* Grid overlay */}
           <div
