@@ -1,15 +1,23 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 
+import labScientist1 from '../../assets/images/lab-scientist-1.jpg';
+import labEquipment1 from '../../assets/images/lab-equipment-1.jpg';
+import labTesting1 from '../../assets/images/lab-testing-1.jpg';
+import labMicroscope1 from '../../assets/images/lab-microscope-1.jpg';
+import labResearcher1 from '../../assets/images/lab-researcher-1.jpg';
+import labSamples1 from '../../assets/images/lab-samples-1.jpg';
+import labTechnician1 from '../../assets/images/lab-technician-1.jpg';
+
 // Use 7 images to match the design shown in the image
 const PROFILE_IMAGES = [
-  'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&auto=format&fit=crop&q=80', // Lab technician with microscope
-  'https://images.unsplash.com/photo-1576765974102-b756026db7c2?w=1200&auto=format&fit=crop&q=80', // Medical scientist in lab coat
-  'https://images.unsplash.com/photo-1581595220892-b0739db3ba3c?w=1200&auto=format&fit=crop&q=80', // Researcher holding sample tray
-  'https://images.unsplash.com/photo-1580894908361-967195033215?w=1200&auto=format&fit=crop&q=80', // Female lab professional with pipette
-  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=1200&auto=format&fit=crop&q=80', // Scientist portrait in lab
-  'https://images.unsplash.com/photo-1580894906472-7af0b42fd395?w=1200&auto=format&fit=crop&q=80', // Specialist with protective gear
-  'https://images.unsplash.com/photo-1582719478347-7713bb088dc3?w=1200&auto=format&fit=crop&q=80', // Team lead reviewing results
+  labScientist1,
+  labResearcher1,
+  labMicroscope1,
+  labSamples1,
+  labTesting1,
+  labEquipment1,
+  labTechnician1,
 ];
 
 const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);

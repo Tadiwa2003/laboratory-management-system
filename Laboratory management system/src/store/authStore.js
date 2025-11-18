@@ -5,6 +5,12 @@ const useAuthStore = create((set) => ({
   token: null,
   isAuthenticated: false,
   
+  // Initialize: explicitly reset auth state (called on app mount)
+  initialize: () => {
+    // Clear any potential persisted state
+    set({ user: null, token: null, isAuthenticated: false });
+  },
+  
   login: (user, token) => {
     set({ user, token, isAuthenticated: true });
   },

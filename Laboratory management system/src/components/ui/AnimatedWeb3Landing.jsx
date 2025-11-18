@@ -107,6 +107,63 @@ export function Web3HeroAnimated() {
     }
   }, [isAuthenticated, navigate]);
 
+  const DOC_CARDS = [
+    {
+      title: "Getting Started",
+      desc: "Launch your first site and onboard teams in less than 48 hours.",
+      key: "getting-started",
+      icon: BookOpen,
+      gradient: "from-[#007C91]/15 to-[#00B8D4]/15",
+      mainColor: "#007C91",
+      secondaryColor: "#00B8D4",
+    },
+    {
+      title: "User Guide",
+      desc: "Comprehensive guide to all features",
+      key: "user-guide",
+      icon: FileText,
+      gradient: "from-purple-500/40 to-pink-500/40",
+      mainColor: "#a855f7",
+      secondaryColor: "#ec4899"
+    },
+    {
+      title: "API Documentation",
+      desc: "Technical documentation for developers",
+      key: "api-docs",
+      icon: Code,
+      gradient: "from-green-500/40 to-emerald-500/40",
+      mainColor: "#22c55e",
+      secondaryColor: "#10b981"
+    },
+    {
+      title: "Best Practices",
+      desc: "Tips and best practices for optimal usage",
+      key: "best-practices",
+      icon: CheckCircle,
+      gradient: "from-yellow-500/40 to-orange-500/40",
+      mainColor: "#eab308",
+      secondaryColor: "#f97316"
+    },
+    {
+      title: "Troubleshooting",
+      desc: "Common issues and solutions",
+      key: "troubleshooting",
+      icon: AlertCircle,
+      gradient: "from-red-500/40 to-rose-500/40",
+      mainColor: "#ef4444",
+      secondaryColor: "#f43f5e"
+    },
+    {
+      title: "FAQ",
+      desc: "Frequently asked questions",
+      key: "faq",
+      icon: HelpCircle,
+      gradient: "from-indigo-500/40 to-blue-500/40",
+      mainColor: "#6366f1",
+      secondaryColor: "#3b82f6"
+    },
+  ];
+
   return (
     <ReactLenis root>
       <div className="relative w-full text-white">
@@ -504,62 +561,7 @@ export function Web3HeroAnimated() {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                { 
-                  title: 'Getting Started', 
-                  desc: 'Quick start guide for new users',
-                  key: 'getting-started',
-                  icon: BookOpen,
-                  gradient: 'from-blue-500/40 to-cyan-500/40',
-                  mainColor: '#3b82f6',
-                  secondaryColor: '#06b6d4'
-                },
-                { 
-                  title: 'User Guide', 
-                  desc: 'Comprehensive guide to all features',
-                  key: 'user-guide',
-                  icon: FileText,
-                  gradient: 'from-purple-500/40 to-pink-500/40',
-                  mainColor: '#a855f7',
-                  secondaryColor: '#ec4899'
-                },
-                { 
-                  title: 'API Documentation', 
-                  desc: 'Technical documentation for developers',
-                  key: 'api-docs',
-                  icon: Code,
-                  gradient: 'from-green-500/40 to-emerald-500/40',
-                  mainColor: '#22c55e',
-                  secondaryColor: '#10b981'
-                },
-                { 
-                  title: 'Best Practices', 
-                  desc: 'Tips and best practices for optimal usage',
-                  key: 'best-practices',
-                  icon: CheckCircle,
-                  gradient: 'from-yellow-500/40 to-orange-500/40',
-                  mainColor: '#eab308',
-                  secondaryColor: '#f97316'
-                },
-                { 
-                  title: 'Troubleshooting', 
-                  desc: 'Common issues and solutions',
-                  key: 'troubleshooting',
-                  icon: AlertCircle,
-                  gradient: 'from-red-500/40 to-rose-500/40',
-                  mainColor: '#ef4444',
-                  secondaryColor: '#f43f5e'
-                },
-                { 
-                  title: 'FAQ', 
-                  desc: 'Frequently asked questions',
-                  key: 'faq',
-                  icon: HelpCircle,
-                  gradient: 'from-indigo-500/40 to-blue-500/40',
-                  mainColor: '#6366f1',
-                  secondaryColor: '#3b82f6'
-                },
-              ].map((doc, idx) => {
+              {DOC_CARDS.map((doc, idx) => {
                 const Icon = doc.icon;
                 return (
                   <motion.div

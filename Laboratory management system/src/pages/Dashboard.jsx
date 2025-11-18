@@ -30,6 +30,7 @@ import { Badge } from '../components/ui/Badge';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '../components/ui/PieChart';
 import { AnimatedChartCard, ChartCardBody, ChartCardTitle } from '../components/ui/AnimatedChartCard';
 import MonthlyAnalytics from '../components/ui/MonthlyAnalytics';
+import Interactive3DAnalyticsCard from '../components/ui/Interactive3DAnalyticsCard';
 import useAuthStore from '../store/authStore';
 import mockDataService from '../services/mockData';
 
@@ -43,6 +44,59 @@ const Dashboard = () => {
     pendingTests: 0,
     completedResults: 0,
   });
+  const [monthlyData, setMonthlyData] = useState([]);
+
+  // Generate monthly data from actual data
+  const generateMonthlyData = () => {
+    const patients = mockDataService.getPatients();
+    const tests = mockDataService.getTests();
+    const results = mockDataService.getResults();
+
+    // Get the last 6 months
+    const months = [];
+    const now = new Date();
+    
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      const monthName = date.toLocaleDateString('en-US', { month: 'short' });
+      
+      // Count new patients for this month
+      const monthPatients = patients.filter(p => {
+        if (!p.createdAt) return false;
+        const patientDate = new Date(p.createdAt);
+        return patientDate.getFullYear() === date.getFullYear() && 
+               patientDate.getMonth() === date.getMonth();
+      }).length;
+
+      // Count tests performed in this month
+      const monthTests = tests.filter(t => {
+        if (!t.createdAt) return false;
+        const testDate = new Date(t.createdAt);
+        return testDate.getFullYear() === date.getFullYear() && 
+               testDate.getMonth() === date.getMonth();
+      }).length;
+
+      // Count completed results for this month
+      const monthResults = results.filter(r => {
+        if (!r.createdAt || r.status !== 'approved') return false;
+        const resultDate = new Date(r.createdAt);
+        return resultDate.getFullYear() === date.getFullYear() && 
+               resultDate.getMonth() === date.getMonth();
+      }).length;
+
+      months.push({
+        name: monthName,
+        monthKey,
+        patients: monthPatients,
+        tests: monthTests,
+        results: monthResults,
+        date: date.toISOString(),
+      });
+    }
+
+    return months;
+  };
 
   useEffect(() => {
     const users = mockDataService.getUsers();
@@ -59,6 +113,9 @@ const Dashboard = () => {
       pendingTests: tests.filter(t => t.status === 'pending').length,
       completedResults: results.filter(r => r.status === 'approved').length,
     });
+
+    // Generate monthly data from actual data
+    setMonthlyData(generateMonthlyData());
   }, []);
 
   const cards = [
@@ -141,14 +198,6 @@ const Dashboard = () => {
     },
   };
 
-  const monthlyData = [
-    { name: 'Jan', patients: 45, tests: 120 },
-    { name: 'Feb', patients: 52, tests: 135 },
-    { name: 'Mar', patients: 48, tests: 130 },
-    { name: 'Apr', patients: 61, tests: 145 },
-    { name: 'May', patients: 55, tests: 150 },
-    { name: 'Jun', patients: 67, tests: 170 },
-  ];
 
   return (
     <div className="space-y-6">
@@ -207,22 +256,22 @@ const Dashboard = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-            Test Trends (Last 7 Days)
-          </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={testTrendData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="tests" stroke="#3b82f6" name="Tests Ordered" />
-              <Line type="monotone" dataKey="results" stroke="#10b981" name="Results Completed" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <Interactive3DAnalyticsCard
+            title="Test Trends"
+            subtitle="Last 7 Days"
+            data={testTrendData.map(item => ({
+              name: item.name,
+              value: item.tests,
+              results: item.results
+            }))}
+            isLoading={false}
+          />
+        </motion.div>
 
         <Card className="flex flex-col">
           <CardHeader className="items-center pb-0">
