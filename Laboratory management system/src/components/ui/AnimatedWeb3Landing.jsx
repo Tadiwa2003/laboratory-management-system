@@ -80,13 +80,13 @@ export function Web3HeroAnimated() {
       transition: { delay: i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] },
     }),
   };
-  
+
   // Symmetric pillar heights (percent). Tall at edges, low at center.
   const pillars = [92, 84, 78, 70, 62, 54, 46, 34, 18, 34, 46, 54, 62, 70, 78, 84, 92];
 
   // State to trigger animations once the component is mounted.
   const [isMounted, setIsMounted] = useState(false);
-  
+
   const handleGetStarted = () => {
     setLoading(true);
     setTimeout(() => {
@@ -118,9 +118,9 @@ export function Web3HeroAnimated() {
             </div>
           </div>
         )}
-        
+
         <style>
-        {`
+          {`
           @keyframes fadeInUp {
             from {
               opacity: 0;
@@ -150,19 +150,33 @@ export function Web3HeroAnimated() {
         </style>
 
         <section className="relative isolate h-screen overflow-hidden bg-black text-white">
-          {/* Gradient tracers */}
+          {/* Hero background image with overlay */}
+          <div className="absolute inset-0 z-0">
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: "url('https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80')"
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/70" />
+          </div>
+
+
+
+          {/* Gradient tracers - adjusted for better visibility on image */}
           <div className="pointer-events-none absolute inset-0 z-20">
             <GradientTracing
               width={480}
               height={220}
-              className="hidden md:block absolute top-28 left-16 opacity-40"
+              className="hidden md:block absolute top-28 left-16 opacity-60"
               gradientColors={["#38BDF8", "#60A5FA", "#A855F7"]}
               strokeWidth={4}
             />
             <GradientTracing
               width={360}
               height={180}
-              className="absolute bottom-24 right-24 opacity-35"
+              className="absolute bottom-24 right-24 opacity-50"
               gradientColors={["#93C5FD", "#2DD4BF", "#38BDF8"]}
               strokeWidth={3}
               animationDuration={4}
@@ -170,51 +184,13 @@ export function Web3HeroAnimated() {
             <GradientTracing
               width={320}
               height={160}
-              className="hidden lg:block absolute top-1/3 right-1/3 opacity-30"
+              className="hidden lg:block absolute top-1/3 right-1/3 opacity-40"
               gradientColors={["#F472B6", "#C084FC", "#38BDF8"]}
               strokeWidth={2.5}
               animationDuration={5}
               path={`M10,${160 / 2} C120,10 200,150 310,${160 / 2}`}
             />
           </div>
-          {/* ================== BACKGROUND ================== */}
-          {/* Luminous elliptical gradients */}
-          <div
-            aria-hidden
-            className="absolute inset-0 -z-30"
-            style={{
-              backgroundImage: [
-                // Main central dome/band
-                "radial-gradient(80% 55% at 50% 52%, rgba(14,165,233,0.45) 0%, rgba(2,132,199,0.46) 27%, rgba(3,105,161,0.38) 47%, rgba(7,89,133,0.45) 60%, rgba(12,74,110,0.92) 78%, rgba(0,0,0,1) 88%)",
-                // Warm sweep from top-left
-                "radial-gradient(85% 60% at 14% 0%, rgba(56,189,248,0.65) 0%, rgba(14,165,233,0.58) 30%, rgba(48,24,28,0.0) 64%)",
-                // Cool rim on top-right
-                "radial-gradient(70% 50% at 86% 22%, rgba(59,130,246,0.40) 0%, rgba(16,18,28,0.0) 55%)",
-                // Soft top vignette
-                "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0) 40%)",
-              ].join(","),
-              backgroundColor: "#000",
-            }}
-          />
-
-          {/* Vignette corners for extra contrast */}
-          <div aria-hidden className="absolute inset-0 -z-20 bg-[radial-gradient(140%_120%_at_50%_0%,transparent_60%,rgba(0,0,0,0.85))]" />
-
-          {/* Grid overlay */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 mix-blend-screen opacity-30"
-            style={{
-              backgroundImage: [
-                // Vertical grid lines
-                "repeating-linear-gradient(90deg, rgba(255,255,255,0.09) 0 1px, transparent 1px 96px)",
-                "repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 24px)",
-                // Curved horizontal arcs
-                "repeating-radial-gradient(80% 55% at 50% 52%, rgba(255,255,255,0.08) 0 1px, transparent 1px 120px)"
-              ].join(","),
-              backgroundBlendMode: "screen",
-            }}
-          />
 
           {/* ================== NAV ================== */}
           <header className="relative z-10">
@@ -225,10 +201,10 @@ export function Web3HeroAnimated() {
               </div>
 
               <nav className="hidden items-center gap-8 text-sm/6 text-white/80 md:flex">
-                {['Features','Testimonials','About','Contact','Docs'].map((i)=>(
-                  <a 
-                    key={i} 
-                    className="hover:text-white transition-colors cursor-pointer" 
+                {['Features', 'Testimonials', 'About', 'Docs'].map((i) => (
+                  <a
+                    key={i}
+                    className="hover:text-white transition-colors cursor-pointer"
                     onClick={(e) => {
                       e.preventDefault();
                       const section = document.getElementById(i.toLowerCase());
@@ -241,13 +217,13 @@ export function Web3HeroAnimated() {
               </nav>
 
               <div className="hidden items-center gap-3 md:flex">
-                <button 
+                <button
                   onClick={() => navigate('/login')}
                   className="rounded-full px-4 py-2 text-sm text-white/80 hover:text-white transition-colors"
                 >
                   Sign in
                 </button>
-                <button 
+                <button
                   onClick={handleGetStarted}
                   disabled={loading}
                   className="rounded-full bg-white px-4 py-2 text-sm font-medium text-black shadow-sm transition hover:bg-white/90 disabled:opacity-50"
@@ -261,43 +237,85 @@ export function Web3HeroAnimated() {
           </header>
 
           {/* ================== COPY ================== */}
-          <div className="relative z-10 mx-auto grid w-full max-w-5xl place-items-center px-6 py-16 md:py-24 lg:py-28">
-            <div className={`mx-auto text-center ${isMounted ? 'animate-fadeInUp' : 'opacity-0'}`}>
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 text-[11px] uppercase tracking-wider text-white/70 ring-1 ring-white/10 backdrop-blur">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary-400" /> Laboratory Management System
+          <div className="relative z-30 mx-auto grid w-full max-w-5xl place-items-center px-6 py-16 md:py-24 lg:py-28">
+            <div className={`text-center ${isMounted ? 'animate-fadeInUp' : 'opacity-0'}`}>
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md px-4 py-2 text-[11px] uppercase tracking-wider text-white/80 ring-1 ring-white/20 border border-white/10">
+                <span className="h-2 w-2 rounded-full bg-primary-400 animate-pulse" />
+                Advanced Laboratory Management System
               </span>
-              <h1 
-                style={{ animationDelay: '200ms' }} 
-                className={`mt-6 text-4xl font-bold tracking-tight md:text-6xl lg:text-7xl ${isMounted ? 'animate-fadeInUp' : 'opacity-0'}`}
+
+              <div className={`mt-6 flex items-center justify-center gap-4 ${isMounted ? 'animate-fadeInUp' : 'opacity-0'}`} style={{ animationDelay: '100ms' }}>
+                <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2 border border-white/20">
+                  <div className="flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+                    <span className="text-xs font-medium text-white/90">Live Monitoring</span>
+                  </div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2 border border-white/20">
+                  <div className="flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full bg-blue-400" />
+                    <span className="text-xs font-medium text-white/90">HIPAA Compliant</span>
+                  </div>
+                </div>
+              </div>
+
+              <h1
+                style={{ animationDelay: '200ms' }}
+                className={`mt-8 text-4xl font-bold tracking-tight md:text-6xl lg:text-7xl ${isMounted ? 'animate-fadeInUp' : 'opacity-0'} bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent`}
               >
-                Streamline Your Laboratory Operations
+                Transform Your Laboratory Operations
               </h1>
-              <p 
-                style={{ animationDelay: '300ms' }} 
-                className={`mx-auto mt-5 max-w-2xl text-balance text-white/80 md:text-lg lg:text-xl ${isMounted ? 'animate-fadeInUp' : 'opacity-0'}`}
+
+              <p
+                style={{ animationDelay: '300ms' }}
+                className={`mx-auto mt-6 max-w-3xl text-balance text-white/90 md:text-xl lg:text-2xl leading-relaxed ${isMounted ? 'animate-fadeInUp' : 'opacity-0'}`}
               >
-                Manage patients, specimens, tests, and results all in one place with an intuitive, modern interface designed for efficiency and excellence.
+                Experience the future of laboratory management with real-time specimen tracking,
+                automated workflows, and comprehensive analytics—all powered by cutting-edge technology
+                designed for modern healthcare facilities.
               </p>
-              <div 
-                style={{ animationDelay: '400ms' }} 
-                className={`mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row ${isMounted ? 'animate-fadeInUp' : 'opacity-0'}`}
+
+              <div
+                style={{ animationDelay: '400ms' }}
+                className={`mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row ${isMounted ? 'animate-fadeInUp' : 'opacity-0'}`}
               >
-                <button 
+                <button
                   onClick={handleGetStarted}
                   disabled={loading}
-                  className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-black shadow transition hover:bg-white/90 disabled:opacity-50"
+                  className="group relative inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
                 >
-                  Get Started
+                  <span className="relative z-10">Get Started Now</span>
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </button>
-                <button 
+
+                <button
                   onClick={() => {
                     const featuresSection = document.getElementById('features');
                     featuresSection?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white/90 backdrop-blur hover:border-white/40 transition-colors"
+                  className="group inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-md px-8 py-4 text-base font-semibold text-white/90 transition-all duration-300 hover:border-white/50 hover:bg-white/20 hover:shadow-lg"
                 >
-                  Learn More
+                  <span>Explore Features</span>
+                  <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
                 </button>
+              </div>
+
+              {/* Key features highlights */}
+              <div
+                style={{ animationDelay: '500ms' }}
+                className={`mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 ${isMounted ? 'animate-fadeInUp' : 'opacity-0'}`}
+              >
+                {[
+                  { icon: '🔬', label: 'Advanced Analytics', desc: 'Real-time insights and reporting' },
+                  { icon: '⚡', label: 'Lightning Fast', desc: 'Process specimens in record time' },
+                  { icon: '🛡️', label: 'Secure & Compliant', desc: 'HIPAA compliant data protection' }
+                ].map((feature, idx) => (
+                  <div key={idx} className="group bg-white/5 backdrop-blur-md rounded-lg p-4 border border-white/10 hover:bg-white/10 transition-all duration-300">
+                    <div className="text-2xl mb-2">{feature.icon}</div>
+                    <h3 className="text-sm font-semibold text-white mb-1">{feature.label}</h3>
+                    <p className="text-xs text-white/70">{feature.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -305,36 +323,25 @@ export function Web3HeroAnimated() {
           {/* ================== PARTNERS/TRUST ================== */}
           <div className="relative z-10 mx-auto mt-10 w-full max-w-6xl px-6 pb-24">
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 opacity-70">
-              {["HIPAA Compliant","ISO Certified","Secure","Reliable","Modern","Efficient"].map((brand) => (
+              {["HIPAA Compliant", "ISO Certified", "Secure", "Reliable", "Modern", "Efficient"].map((brand) => (
                 <div key={brand} className="text-xs uppercase tracking-wider text-white/70">{brand}</div>
               ))}
             </div>
           </div>
 
           {/* ================== FOREGROUND ================== */}
-          {/* Center-bottom rectangular glow with pulse animation */}
+          {/* Enhanced bottom gradient fade for better text contrast */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[40vh] bg-gradient-to-t from-black via-black/60 to-transparent" />
+
+          {/* Subtle animated glow effect */}
           <div
-            className="pointer-events-none absolute bottom-[128px] left-1/2 z-0 h-36 w-28 -translate-x-1/2 rounded-md bg-gradient-to-b from-primary-400/75 via-primary-500/60 to-transparent"
-            style={{ animation: 'subtlePulse 6s ease-in-out infinite' }}
+            className="pointer-events-none absolute bottom-[20%] left-1/2 z-0 h-48 w-32 -translate-x-1/2 rounded-full bg-gradient-to-t from-blue-500/20 via-purple-500/10 to-transparent"
+            style={{ animation: 'subtlePulse 8s ease-in-out infinite' }}
           />
 
-          {/* Stepped pillars silhouette */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[54vh]">
-            {/* dark fade */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent" />
-            {/* bars */}
-            <div className="absolute inset-x-0 bottom-0 flex h-full items-end gap-px px-[2px]">
-              {pillars.map((h, i) => (
-                <div
-                  key={i}
-                  className="flex-1 bg-black transition-all duration-1000 ease-in-out"
-                  style={{
-                    height: isMounted ? `${h}%` : '0%',
-                    transitionDelay: `${Math.abs(i - Math.floor(pillars.length / 2)) * 60}ms`
-                  }}
-                />
-              ))}
-            </div>
+          {/* Simplified bottom elements for cleaner look */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[20vh]">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
           </div>
         </section>
 
@@ -357,7 +364,7 @@ export function Web3HeroAnimated() {
                 { title: 'User Management', desc: 'Role-based access control and user administration' },
                 { title: 'Reporting', desc: 'Generate detailed reports and analytics' },
               ].map((feature, idx) => (
-                <div 
+                <div
                   key={feature.title}
                   className="group p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 hover:bg-gray-800/70 hover:border-gray-600/50 transition-all duration-300 shadow-lg hover:shadow-xl"
                   style={{ animationDelay: `${idx * 100}ms` }}
@@ -393,11 +400,11 @@ export function Web3HeroAnimated() {
             </div>
             <div className="max-w-4xl mx-auto space-y-8 text-center">
               <p className="text-lg text-white/80 leading-relaxed">
-                Linos Laboratory Management System is a comprehensive solution designed to streamline 
+                Linos Laboratory Management System is a comprehensive solution designed to streamline
                 laboratory operations, improve efficiency, and ensure accuracy in patient care and testing processes.
               </p>
               <p className="text-lg text-white/80 leading-relaxed">
-                Built with modern technology and best practices, our system provides a secure, reliable, 
+                Built with modern technology and best practices, our system provides a secure, reliable,
                 and user-friendly platform for managing all aspects of laboratory operations.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
@@ -416,67 +423,6 @@ export function Web3HeroAnimated() {
           </div>
         </section>
 
-        {/* Contact Section */}
-        <section id="contact" className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-black text-white py-20 px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">Contact</h2>
-              <p className="text-xl text-white/70 max-w-2xl mx-auto">
-                Get in touch with our team
-              </p>
-            </div>
-            <div className="max-w-2xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <div className="p-6 rounded-lg bg-white/5 backdrop-blur border border-white/10">
-                  <h3 className="text-xl font-semibold mb-2">Email</h3>
-                  <p className="text-white/70">support@linoslms.com</p>
-                </div>
-                <div className="p-6 rounded-lg bg-white/5 backdrop-blur border border-white/10">
-                  <h3 className="text-xl font-semibold mb-2">Phone</h3>
-                  <p className="text-white/70">+1 (555) 123-4567</p>
-                </div>
-              </div>
-              <form 
-                className="space-y-6"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert('Thank you for your message! We will get back to you soon.');
-                }}
-              >
-                <div>
-                  <input 
-                    type="text" 
-                    placeholder="Your Name" 
-                    required
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 backdrop-blur border border-white/10 text-white placeholder-white/50 focus:outline-none focus:border-primary-500"
-                  />
-                </div>
-                <div>
-                  <input 
-                    type="email" 
-                    placeholder="Your Email" 
-                    required
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 backdrop-blur border border-white/10 text-white placeholder-white/50 focus:outline-none focus:border-primary-500"
-                  />
-                </div>
-                <div>
-                  <textarea 
-                    placeholder="Your Message" 
-                    rows={5}
-                    required
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 backdrop-blur border border-white/10 text-white placeholder-white/50 focus:outline-none focus:border-primary-500"
-                  />
-                </div>
-                <button 
-                  type="submit"
-                  className="w-full rounded-full bg-white px-6 py-3 text-sm font-semibold text-black shadow transition hover:bg-white/90"
-                >
-                  Send Message
-                </button>
-              </form>
-            </div>
-          </div>
-        </section>
 
         {/* Docs Section */}
         <section id="docs" className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-black text-white py-20 px-6">
@@ -505,8 +451,8 @@ export function Web3HeroAnimated() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
-                { 
-                  title: 'Getting Started', 
+                {
+                  title: 'Getting Started',
                   desc: 'Quick start guide for new users',
                   key: 'getting-started',
                   icon: BookOpen,
@@ -514,8 +460,8 @@ export function Web3HeroAnimated() {
                   mainColor: '#3b82f6',
                   secondaryColor: '#06b6d4'
                 },
-                { 
-                  title: 'User Guide', 
+                {
+                  title: 'User Guide',
                   desc: 'Comprehensive guide to all features',
                   key: 'user-guide',
                   icon: FileText,
@@ -523,8 +469,8 @@ export function Web3HeroAnimated() {
                   mainColor: '#a855f7',
                   secondaryColor: '#ec4899'
                 },
-                { 
-                  title: 'API Documentation', 
+                {
+                  title: 'API Documentation',
                   desc: 'Technical documentation for developers',
                   key: 'api-docs',
                   icon: Code,
@@ -532,8 +478,8 @@ export function Web3HeroAnimated() {
                   mainColor: '#22c55e',
                   secondaryColor: '#10b981'
                 },
-                { 
-                  title: 'Best Practices', 
+                {
+                  title: 'Best Practices',
                   desc: 'Tips and best practices for optimal usage',
                   key: 'best-practices',
                   icon: CheckCircle,
@@ -541,8 +487,8 @@ export function Web3HeroAnimated() {
                   mainColor: '#eab308',
                   secondaryColor: '#f97316'
                 },
-                { 
-                  title: 'Troubleshooting', 
+                {
+                  title: 'Troubleshooting',
                   desc: 'Common issues and solutions',
                   key: 'troubleshooting',
                   icon: AlertCircle,
@@ -550,8 +496,8 @@ export function Web3HeroAnimated() {
                   mainColor: '#ef4444',
                   secondaryColor: '#f43f5e'
                 },
-                { 
-                  title: 'FAQ', 
+                {
+                  title: 'FAQ',
                   desc: 'Frequently asked questions',
                   key: 'faq',
                   icon: HelpCircle,
@@ -568,33 +514,33 @@ export function Web3HeroAnimated() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1, duration: 0.5 }}
                   >
-                  <AnimatedCard
-                    onClick={() => setSelectedDoc(doc.key)}
-                    className="cursor-pointer"
-                  >
-                    <CardVisual>
-                      <DocVisual 
-                        mainColor={doc.mainColor}
-                        secondaryColor={doc.secondaryColor}
-                        icon={Icon}
-                        gradient={doc.gradient}
-                      />
-                    </CardVisual>
-                    <CardBody>
-                      <CardTitle>{doc.title}</CardTitle>
-                      <CardDescription>{doc.desc}</CardDescription>
-                      <button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedDoc(doc.key);
-                        }}
-                        className="mt-4 text-blue-400 hover:text-blue-300 transition-colors font-medium flex items-center gap-1 group-hover/animated-card:gap-2"
-                      >
-                        Read More 
-                        <span className="transition-transform group-hover/animated-card:translate-x-1">→</span>
-                      </button>
-                    </CardBody>
-                  </AnimatedCard>
+                    <AnimatedCard
+                      onClick={() => setSelectedDoc(doc.key)}
+                      className="cursor-pointer"
+                    >
+                      <CardVisual>
+                        <DocVisual
+                          mainColor={doc.mainColor}
+                          secondaryColor={doc.secondaryColor}
+                          icon={Icon}
+                          gradient={doc.gradient}
+                        />
+                      </CardVisual>
+                      <CardBody>
+                        <CardTitle>{doc.title}</CardTitle>
+                        <CardDescription>{doc.desc}</CardDescription>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedDoc(doc.key);
+                          }}
+                          className="mt-4 text-blue-400 hover:text-blue-300 transition-colors font-medium flex items-center gap-1 group-hover/animated-card:gap-2"
+                        >
+                          Read More
+                          <span className="transition-transform group-hover/animated-card:translate-x-1">→</span>
+                        </button>
+                      </CardBody>
+                    </AnimatedCard>
                   </motion.div>
                 );
               })}
@@ -637,11 +583,11 @@ function getDocContent(key) {
         <div>
           <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Welcome to Linos LMS</h3>
           <p className="mb-4">
-            Linos Laboratory Management System is designed to streamline your laboratory operations. 
+            Linos Laboratory Management System is designed to streamline your laboratory operations.
             This guide will help you get started quickly.
           </p>
         </div>
-        
+
         <div>
           <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">1. Account Setup</h4>
           <ul className="list-disc list-inside space-y-2 ml-4">
@@ -676,13 +622,13 @@ function getDocContent(key) {
 
         <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
           <p className="text-blue-800 dark:text-blue-200">
-            <strong>Tip:</strong> Use the search functionality in each section to quickly find records. 
+            <strong>Tip:</strong> Use the search functionality in each section to quickly find records.
             Keyboard shortcuts are available - press <kbd className="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">?</kbd> to view them.
           </p>
         </div>
       </div>
     ),
-    
+
     'user-guide': (
       <div className="space-y-6 text-gray-700 dark:text-gray-300">
         <div>
@@ -812,7 +758,7 @@ function getDocContent(key) {
 
         <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
           <p className="text-yellow-800 dark:text-yellow-200">
-            <strong>Note:</strong> For complete API documentation, please contact your system administrator 
+            <strong>Note:</strong> For complete API documentation, please contact your system administrator
             or visit our developer portal at <a href="#" className="underline">docs.linoslms.com</a>
           </p>
         </div>
@@ -874,7 +820,7 @@ function getDocContent(key) {
 
         <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
           <p className="text-green-800 dark:text-green-200">
-            <strong>Remember:</strong> Consistent use of these practices ensures data accuracy, 
+            <strong>Remember:</strong> Consistent use of these practices ensures data accuracy,
             improves workflow efficiency, and maintains compliance with regulatory requirements.
           </p>
         </div>
@@ -957,7 +903,7 @@ function getDocContent(key) {
         <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-800">
           <p className="text-red-800 dark:text-red-200">
             <strong>Still having issues?</strong> Contact support at{' '}
-            <a href="mailto:support@linoslms.com" className="underline">support@linoslms.com</a> 
+            <a href="mailto:support@linoslms.com" className="underline">support@linoslms.com</a>
             {' '}or call +1 (555) 123-4567
           </p>
         </div>
@@ -976,7 +922,7 @@ function getDocContent(key) {
               Q: How do I reset my password?
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              A: Click on "Forgot Password" on the login page and follow the instructions sent to your email. 
+              A: Click on "Forgot Password" on the login page and follow the instructions sent to your email.
               If you don't receive the email, contact your system administrator.
             </p>
           </div>
@@ -986,7 +932,7 @@ function getDocContent(key) {
               Q: Can I export patient data?
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              A: Yes, you can export patient data in various formats (PDF, Excel, CSV) from the Reports section. 
+              A: Yes, you can export patient data in various formats (PDF, Excel, CSV) from the Reports section.
               Ensure you have the appropriate permissions for data export.
             </p>
           </div>
@@ -996,7 +942,7 @@ function getDocContent(key) {
               Q: How do I add a new test type?
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              A: Test types are managed by system administrators. Contact your administrator to add new test types 
+              A: Test types are managed by system administrators. Contact your administrator to add new test types
               or modify existing ones.
             </p>
           </div>
@@ -1006,7 +952,7 @@ function getDocContent(key) {
               Q: What browsers are supported?
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              A: Linos LMS supports the latest versions of Chrome, Firefox, Safari, and Edge. 
+              A: Linos LMS supports the latest versions of Chrome, Firefox, Safari, and Edge.
               We recommend using Chrome for the best experience.
             </p>
           </div>
@@ -1016,7 +962,7 @@ function getDocContent(key) {
               Q: How do I print test results?
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              A: Navigate to the Results section, select the result you want to print, and click the "Print" button. 
+              A: Navigate to the Results section, select the result you want to print, and click the "Print" button.
               You can also generate PDF reports from the Reports section.
             </p>
           </div>
@@ -1026,7 +972,7 @@ function getDocContent(key) {
               Q: Can multiple users work on the same record?
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              A: The system uses a locking mechanism to prevent conflicts. When one user is editing a record, 
+              A: The system uses a locking mechanism to prevent conflicts. When one user is editing a record,
               others will see it as locked until the first user saves or cancels.
             </p>
           </div>
@@ -1036,7 +982,7 @@ function getDocContent(key) {
               Q: How long is data retained?
             </h4>
             <p className="text-gray-600 dark:text-gray-400">
-              A: Data retention follows HIPAA guidelines and your organization's policies. 
+              A: Data retention follows HIPAA guidelines and your organization's policies.
               Contact your administrator for specific retention periods.
             </p>
           </div>
@@ -1051,7 +997,7 @@ function getDocContent(key) {
       </div>
     )
   };
-  
+
   return content[key] || <p>Documentation not found.</p>;
 }
 

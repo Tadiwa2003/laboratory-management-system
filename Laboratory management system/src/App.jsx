@@ -20,6 +20,7 @@ import Settings from './pages/settings/Settings';
 import Profile from './pages/profile/Profile';
 import ToolbarPromptHandler from './components/toolbar/ToolbarPromptHandler';
 import Welcome from './pages/Welcome';
+import Contact from './pages/Contact';
 
 function App() {
   const { isAuthenticated } = useAuthStore();
@@ -59,6 +60,8 @@ function App() {
           path="/login"
           element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />}
         />
+        {/* Contact page - public route */}
+        <Route path="/contact" element={<Contact />} />
         {/* Protected dashboard routes - all routes under /dashboard prefix */}
         <Route
           path="/dashboard"

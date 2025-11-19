@@ -11,6 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.3.3",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-slot": "^1.2.4",
     "@react-three/fiber": "^9.4.0",
     "axios": "^1.13.2",
     "class-variance-authority": "^0.7.1",
@@ -29,6 +32,7 @@
     "react-router-dom": "^7.9.5",
     "reaviz": "^16.1.0",
     "recharts": "^3.4.1",
+    "simplex-noise": "^4.0.3",
     "tailwind-merge": "^3.4.0",
     "three": "^0.181.1",
     "zustand": "^5.0.8"

@@ -1,0 +1,4 @@
+mongodb_data/
+mongodb.log
+node_modules/
+.env

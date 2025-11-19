@@ -14,10 +14,10 @@ import { IoFlask, IoLogoGithub, IoLogoDiscord, IoLogoLinkedin } from 'react-icon
 import { cn } from '../../utils/cn';
 
 const FloatingNav = () => {
+  const navigate = useNavigate();
   const links = [
     { label: 'Overview', href: '#' },
     { label: 'Docs', href: '#' },
-    { label: 'Pricing', href: '#' },
   ];
 
   return (
@@ -42,7 +42,10 @@ const FloatingNav = () => {
         <button className="rounded-full border border-white/20 px-4 py-2 text-xs font-medium text-white/70 transition-colors hover:text-white">
           Docs
         </button>
-        <button className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-blue-900 shadow-md transition-colors hover:bg-blue-100">
+        <button
+          onClick={() => navigate('/contact')}
+          className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-blue-900 shadow-md transition-colors hover:bg-blue-100"
+        >
           Contact
         </button>
       </div>

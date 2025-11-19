@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import NotificationContainer from './NotificationContainer';
 
+
 const DashboardLayout = () => {
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-100 dark:bg-[#050d1a]">
@@ -23,6 +24,8 @@ const DashboardLayout = () => {
 
         <NotificationContainer />
       </div>
+
+
     </div>
   );
 };
